@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classroom Path Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">CLASSROOM</span>
+          <span class="brand-accent">PATH FINDER</span>
+        </div>
+      </div>
+
+      <!-- Floor Selector -->
+      <div class="floor-pills" role="tablist" aria-label="Select floor">
+        <button class="floor-pill active" data-floor="gf" type="button">
+          <span>GF</span>
+          <span class="route-indicator hidden" id="dot-gf"></span>
+        </button>
+        <button class="floor-pill" data-floor="1f" type="button">
+          <span>1F</span>
+          <span class="route-indicator hidden" id="dot-1f"></span>
+        </button>
+        <button class="floor-pill" data-floor="2f" type="button">
+          <span>2F</span>
+          <span class="route-indicator hidden" id="dot-2f"></span>
+        </button>
+        <button class="floor-pill" data-floor="3f" type="button">
+          <span>3F</span>
+          <span class="route-indicator hidden" id="dot-3f"></span>
+        </button>
+      </div>
+
+      <!-- Quick Search Option -->
+      <div class="search-section">
+        <label class="field-label" for="quickSearchInput">SEARCH ROOM / LAB / CABIN</label>
+        <div class="input-box">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input id="quickSearchInput" type="text" placeholder="Search any room on any floor..." autocomplete="off" />
+          <button id="clearQuickSearch" class="clear-x hidden" type="button" aria-label="Clear search">✕</button>
+        </div>
+        <div id="quickSearchDropdown" class="dropdown-list hidden"></div>
+      </div>
+
+      <!-- Start & Target Destination -->
+      <div class="route-form">
+        <div class="field-group">
+          <label class="field-label" for="startInput">START POINT</label>
+          <div class="input-box">
+            <input id="startInput" type="text" placeholder="Select start point..." autocomplete="off" />
+            <button id="swapBtn" class="swap-inline" type="button" title="Swap start and destination">⇅</button>
+          </div>
+          <div id="startDropdown" class="dropdown-list hidden"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="endInput">TARGET DESTINATION</label>
+          <div class="input-box">
+            <input id="endInput" type="text" placeholder="Type to search..." autocomplete="off" />
+            <button id="clearEndBtn" class="clear-x hidden" type="button" aria-label="Clear destination">✕</button>
+          </div>
+          <div id="endDropdown" class="dropdown-list hidden"></div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="navigateBtn" class="btn-navigate" type="button">NAVIGATE</button>
+          <button id="stopNavBtn" class="btn-stop" type="button">STOP NAVIGATION</button>
+        </div>
+      </div>
+
+      <!-- Shortest Path Summary -->
+      <div id="routeCard" class="route-card hidden">
+        <div class="route-metrics">
+          <div>
+            <div class="metric-val" id="routeDistance">—</div>
+            <div class="metric-sub" id="routeTime">—</div>
+          </div>
+          <div class="floor-journey" id="routeFloors">—</div>
+        </div>
+        <ol id="routeSteps" class="route-steps"></ol>
+      </div>
+
+      <div id="routeError" class="route-error hidden"></div>
+    </aside>
+
+    <!-- Main Blueprint Map Viewport -->
+    <main class="map-stage" id="mapStage">
+      <div class="floor-watermark" id="floorWatermark">GROUND FLOOR</div>
+
+      <svg id="floorSvg" class="floor-svg" viewBox="0 0 1320 840" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <g id="viewportGroup">
+          <g id="corridorLayer"></g>
+          <g id="roomLayer"></g>
+          <g id="routeLayer"></g>
+        </g>
+      </svg>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
